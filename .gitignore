@@ -5,4 +5,3 @@
 tmp.txt 
 # Ignoring this stuff for now, until I maybe want to actually use a library.
 private.rkt
-util.rkt

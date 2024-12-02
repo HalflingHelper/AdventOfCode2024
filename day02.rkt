@@ -1,6 +1,8 @@
 #lang racket
 
-(define input (file->lines "inputs/input_02.txt"))
+(require "util.rkt")
+
+(define input (get-input 2))
 (define data (map (λ (line) (map string->number (string-split line))) input))
 
 (define (safe? ls [dir #f] [last #f])

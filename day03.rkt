@@ -7,8 +7,7 @@
 
 (define (solve^ str [p1? #f] [flag #t])
   (let ([m (regexp-match-positions
-            #px"mul\\((\\d+),(\\d+)\\)|do.{0,3}\\(\\)" str)]
-        [sl (string-length str)])
+            #px"mul\\((\\d+),(\\d+)\\)|do.{0,3}\\(\\)" str)])
     (match m
       [`((,s . ,e) (,ns . ,ne) (,ms . ,me)) 
        (let* ([n (string->number (substring str ns ne))]

@@ -5,24 +5,22 @@
 (define input (get-input 3))
 (define data (apply string-append input))
 
-(define (solve str [p1? #f] [flag #t])
-  (let ([m (regexp-match-positions #px"mul\\((\\d+),(\\d+)\\)" str)]
-        [do (regexp-match-positions #rx"do\\(\\)" str)]
-        [dont (regexp-match-positions #rx"don't\\(\\)" str)]
+(define (solve^ str [p1? #f] [flag #t])
+  (let ([m (regexp-match-positions
+            #px"mul\\((\\d+),(\\d+)\\)|do.{0,3}\\(\\)" str)]
         [sl (string-length str)])
-    (match* (m do dont)
-      [(`((,s . ,e) (,ns . ,ne) (,ms . ,me)) dos donts)
+    (match m
+      [`((,s . ,e) (,ns . ,ne) (,ms . ,me)) 
        (let* ([n (string->number (substring str ns ne))]
-              [m (string->number (substring str ms me))]
-              [rest (substring str e)]
-              [dos^ (or (and dos (caar dos)) sl)]
-              [donts^ (or (and donts (caar donts)) sl)]
-              [v (min dos^ donts^ s)])
-         (cond
-           [(eq? v dos^) (solve (substring str (cdar dos)) p1? #t)]
-           [(eq? v donts^) (solve (substring str (cdar donts)) p1? #f)]
-           [(+ (if (or p1? flag) (* m n) 0) (solve rest p1? flag))]))]
-      [(#f _ _) 0])))
+              [m (string->number (substring str ms me))])
+         (+ (if (or p1? flag) (* m n) 0) (solve^ (substring str e) p1? flag)))]
+      [`((,s . ,e) #f #f)
+       #:when (string=? (substring str s e) "do()")
+       (solve^ (substring str e) p1? #t)]
+      [`((,s . ,e) #f #f)
+       #:when (string=? (substring str s e) "don't()")
+       (solve^ (substring str e) p1? #f)]
+      [_ 0])))
 
-(solve data 'p1)
-(solve data)
+(solve^ data 'p1)
+(solve^ data)

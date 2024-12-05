@@ -3,7 +3,7 @@
 (require "private.rkt")
 
 
-(provide get-input sum)
+(provide get-input sum all?)
 ;; Stuff for pulling the input more efficiently
 ;; I'm writing my own library for this instead of using the package :)
 (require net/url)
@@ -31,3 +31,7 @@
 
 ;; Utility functions that I maybe want
 (define sum ((curry apply) +))
+
+
+(define (all? ls pred)
+  (if (null? ls) #t (and (pred (car ls)) (all? (cdr ls) pred))))

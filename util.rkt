@@ -2,8 +2,9 @@
 
 (require "private.rkt")
 
-
-(provide get-input sum all?)
+(provide get-input
+         sum
+         all?)
 ;; Stuff for pulling the input more efficiently
 ;; I'm writing my own library for this instead of using the package :)
 (require net/url)
@@ -19,7 +20,7 @@
 (define (get-input-path day)
   (format "inputs/input_~a.txt" (pad-day day)))
 
-(define (get-input day)
+(define (get-full-input day)
   (let ([fname (get-input-path day)])
     (if (file-exists? fname)
         (file->lines fname)
@@ -28,10 +29,15 @@
             (display-to-file raw fname)
             (string-split raw "\n"))))))
 
+(define (get-input day [test? #f])
+  (if test?
+      (file->lines "inputs/tmp.txt")
+      (get-full-input day)))
 
 ;; Utility functions that I maybe want
 (define sum ((curry apply) +))
 
-
 (define (all? ls pred)
-  (if (null? ls) #t (and (pred (car ls)) (all? (cdr ls) pred))))
+  (if (null? ls)
+      #t
+      (and (pred (car ls)) (all? (cdr ls) pred))))

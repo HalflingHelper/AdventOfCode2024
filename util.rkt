@@ -4,7 +4,8 @@
 
 (provide get-input
          sum
-         all?)
+         all?
+         char->num)
 ;; Stuff for pulling the input more efficiently
 ;; I'm writing my own library for this instead of using the package :)
 (require net/url)
@@ -38,6 +39,6 @@
 (define sum ((curry apply) +))
 
 (define (all? ls pred)
-  (if (null? ls)
-      #t
-      (and (pred (car ls)) (all? (cdr ls) pred))))
+  (andmap pred ls))
+
+(define (char->num c) (string->number (make-string 1 c)))

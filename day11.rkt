@@ -4,15 +4,9 @@
 (define test? #f)
 (define input (map string->number (string-split (car (get-input 11 test?)))))
 
-
-
-
 (define (split n)
   (let ([i (expt 10 (/ (floor (+ (log n 10) 1)) 2))])
-    (list (quotient n i)
-          (modulo n i))))
-
-
+    (list (quotient n i) (modulo n i))))
 
 (define (process-stone n)
   (cond
@@ -31,9 +25,8 @@
 
 (define (process2 ls n)
   (cond
-    [(null? ls) 0]
-    [(zero? n) (length ls)]
+    [(or (null? ls) (zero? n)) (length ls)]
     [else (+ (process1 (car ls) n) (process2 (cdr ls) n))]))
 
-(process2 input 75)
+(process2 input 25)
 (process2 input 75)
